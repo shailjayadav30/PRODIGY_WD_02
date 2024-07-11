@@ -1,88 +1,13 @@
-// let startTime = 0;
-// let endTime = 0;
-// let lapTime = 0;
-// let timerInterval = null;
-// let laps = [];
-// let isRunning = false;
-
-// document.getElementById("start").addEventListener("click", startTimer);
-// document.getElementById("pause").addEventListener("click", pauseTimer);
-// document.getElementById("reset").addEventListener("click", resetTimer);
-// document.getElementById("lap").addEventListener("click", lapTimer);
-// document.querySelector(".clearbtn").addEventListener("click", clearAllLaps);
-
-// function startTimer() {
-//   if (!isRunning) {
-//     startTime = new Date().getTime();
-//     timerInterval = setInterval(updateTimer, 10);
-//     isRunning = true;
-//   }
-// }
-
-// function pauseTimer() {
-//   if (isRunning) {
-//     endTime = new Date().getTime();
-//     clearInterval(timerInterval);
-//     isRunning = false;
-//   }
-// }
-
-// function resetTimer() {
-//   startTime = 0;
-//   endTime = 0;
-//   lapTime = 0;
-//   isRunning = false;
-//   document.querySelector(".min").textContent = "00:";
-//   document.querySelector(".sec").textContent = "00:";
-//   document.querySelector(".milisec").textContent = "00";
-// }
-
-// function lapTimer() {
-//   if (isRunning) {
-//     lapTime = new Date().getTime() - startTime;
-//     const lap = formatTime(lapTime);
-//     laps.push(lap);
-//     const lapList = document.querySelector(".laps");
-//     const lapItem = document.createElement("li");
-//     lapItem.textContent = lap;
-//     lapList.appendChild(lapItem);
-//   }
-// }
-
-// function clearAllLaps() {
-//   document.querySelector(".laps").innerHTML = "";
-//   laps = [];
-// }
-
-// function updateTimer() {
-//   const currentTime = new Date().getTime();
-//   const timeElapsed = currentTime - startTime;
-//   const timeString = formatTime(timeElapsed);
-//   document.querySelector(".min").textContent = timeString.split(":")[0] + ":";
-//   document.querySelector(".sec").textContent = timeString.split(":")[1] + ":";
-//   document.querySelector(".milisec").textContent = timeString.split(":")[2];
-// }
-
-// function formatTime(time) {
-//   const minutes = Math.floor(time / 60000);
-//   const seconds = Math.floor((time % 60000) / 1000);
-//   const milliseconds = Math.floor((time % 1000) / 10);
-//   if (milliseconds > 99) milliseconds = 99;
-//   if (seconds > 59) seconds = 59;
-//   return `${pad(minutes)}:${pad(seconds)}:${pad(milliseconds)}`;
-
-//   function pad(number) {
-//     return (number < 10 ? "0" : "") + number;
-//   }
-// }
-
-
 const start = document.querySelector(".start");
 const pause = document.querySelector(".pause");
 const reset = document.querySelector(".reset");
 const lap = document.querySelector(".lap");
 const clear = document.querySelector(".clearbtn");
-const lapsul=document.querySelector(".laps")
+const lapsul = document.querySelector(".laps");
+let isPaused = false;
+const zeropad = (num) => {
+  return String(num).padStart(2, "0");
+};
 let min = 0,
   sec = 0,
   msec = 0,
@@ -100,42 +25,41 @@ start.onclick = () => {
     }
     document.querySelector(".watch").innerText = `${zeropad(min)}:${zeropad(
       sec
-    )}:${zeropad(msec)
-    
-    }`;
+    )}:${zeropad(msec)}`;
   }, 10);
-  lap.removeAttribute("disabled")
-};
-
-const zeropad = (num) => {
-  return String(num).padStart(2, "0");
+  lap.removeAttribute("disabled");
+  pause.removeAttribute("disabled"); 
+  start.setAttribute("disabled", true);
 };
 
 pause.onclick = () => {
-clearInterval(timeInterval)  
-
-lap.setAttribute("disabled")
-
-
+  clearInterval(timeInterval);
+  lap.setAttribute("disabled", true);
+  isPaused = true; 
+  start.removeAttribute("disabled"); 
+  pause.setAttribute("disabled", true); 
 };
 
 reset.onclick = () => {
- lapsul.innerHTML="";
- min=sec=msec=count=0;
- clearInterval(timeInterval)
- document.querySelector(".watch").innerText ="00:00:00"
+  lapsul.innerHTML = "";
+  min = sec = msec = count = 0;
+  clearInterval(timeInterval);
+  document.querySelector(".watch").innerText = "00:00:00";
+  lap.setAttribute("disabled", true); 
+  pause.setAttribute("disabled", true); 
+  start.removeAttribute("disabled"); 
+  isPaused = false; 
 };
-let count=0;
+let count = 0;
 lap.onclick = () => {
   count++;
-  let li=document.createElement("li")
-  li.innerHTML=`${'#' +count} -${zeropad(min)}:${zeropad(
-    sec
-  )}:${zeropad(msec)}`
-  lapsul.appendChild(li)
+  let li = document.createElement("li");
+  li.innerHTML = `${"#" + count} -${zeropad(min)}:${zeropad(sec)}:${zeropad(
+    msec
+  )}`;
+  lapsul.appendChild(li);
 };
 
 clear.onclick = () => {
- lapsul.innerHTML="";
-  
+  lapsul.innerHTML = "";
 };
