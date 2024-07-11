@@ -35,11 +35,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-h1 {
   font-size: 6rem;
   color: #370617;
+  font-weight:600 ;
+  
 }
+
+
 
 .btn {
   display: flex;
@@ -74,7 +76,7 @@ button {
 
 .laps {
   margin-top: 2rem;
-  width: 150px;
+  width: 200px;
   height: 150px;
   overflow-y: auto;
   scroll-behavior: smooth;
